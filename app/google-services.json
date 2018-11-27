@@ -1,0 +1,172 @@
+{
+  "project_info": {
+    "project_number": "303724634550",
+    "firebase_url": "https://qresturantadmin.firebaseio.com",
+    "project_id": "qresturantadmin",
+    "storage_bucket": "qresturantadmin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303724634550:android:e5065d87924ba0a0",
+        "android_client_info": {
+          "package_name": "com.example.mahesh.qresturant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303724634550-uh0rbirdbh68h0ms06rq0lkuvaejo8cm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mahesh.qresturant",
+            "certificate_hash": "51fa7bc0b492e9aaf1e2566a4e5109969d45854d"
+          }
+        },
+        {
+          "client_id": "303724634550-i7ttpfkfr9v02l8gerlv4vrtn5g3e9uq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo5V4z1bXyyOtF-0NjGhr167q7ss33tsw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "303724634550-i7ttpfkfr9v02l8gerlv4vrtn5g3e9uq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "303724634550-bku6sj5pat61ud5paf7p8kan5cgig2pb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ios.QResturant"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303724634550:android:126bf93b012d1484",
+        "android_client_info": {
+          "package_name": "com.example.mahesh.qresturantadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303724634550-013aa8b42ishram5dntj5ltasj2uqval.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mahesh.qresturantadmin",
+            "certificate_hash": "51fa7bc0b492e9aaf1e2566a4e5109969d45854d"
+          }
+        },
+        {
+          "client_id": "303724634550-n57l8m00ct5flmvg97ar91n0tt7rb95u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mahesh.qresturantadmin",
+            "certificate_hash": "a654cb50a387b93be751897c9145e2b039034969"
+          }
+        },
+        {
+          "client_id": "303724634550-i7ttpfkfr9v02l8gerlv4vrtn5g3e9uq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo5V4z1bXyyOtF-0NjGhr167q7ss33tsw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "303724634550-i7ttpfkfr9v02l8gerlv4vrtn5g3e9uq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "303724634550-bku6sj5pat61ud5paf7p8kan5cgig2pb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ios.QResturant"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303724634550:android:cdbd23b039704bd5",
+        "android_client_info": {
+          "package_name": "com.example.maheshprasad.whatsappclone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303724634550-qg0cf3nigq53tdtomuu5hrq16ae52c2d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.maheshprasad.whatsappclone",
+            "certificate_hash": "e20b7a53d5998579235559a84dc88dfd5373a534"
+          }
+        },
+        {
+          "client_id": "303724634550-i7ttpfkfr9v02l8gerlv4vrtn5g3e9uq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo5V4z1bXyyOtF-0NjGhr167q7ss33tsw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "303724634550-i7ttpfkfr9v02l8gerlv4vrtn5g3e9uq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "303724634550-bku6sj5pat61ud5paf7p8kan5cgig2pb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ios.QResturant"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
