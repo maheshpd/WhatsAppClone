@@ -59,4 +59,7 @@ dependencies {
 
     //Firebase UI use for display data in recyclerview
     implementation 'com.firebaseui:firebase-ui-database:4.1.0'
+
+    //Firebase Core
+    implementation 'com.google.firebase:firebase-core:16.0.5'
 }
