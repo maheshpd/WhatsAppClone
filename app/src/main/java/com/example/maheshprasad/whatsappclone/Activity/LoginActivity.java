@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         //Firebase
         mAuth = FirebaseAuth.getInstance();
 
+        //coment
 
         //initialize Widget
         InitializeFields();
