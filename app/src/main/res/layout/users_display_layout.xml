@@ -4,53 +4,54 @@
     android:layout_height="wrap_content">
 
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/users_profile_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="15dp"
+        android:src="@drawable/profile_image" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/users_profile_image"
-            android:layout_width="50dp"
-            android:layout_margin="15dp"
-            android:layout_height="50dp"
-            android:src="@drawable/profile_image" />
+    <RelativeLayout
+        android:id="@+id/user_infp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/users_profile_image">
 
-        <RelativeLayout
-            android:id="@+id/user_infp"
+        <TextView
+            android:id="@+id/display_user_name"
             android:layout_width="match_parent"
-            android:layout_toEndOf="@+id/users_profile_image"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/online_image"
+            android:text="User name"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/display_user_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:layout_toStartOf="@+id/online_image"
-                android:text="User name"
-                android:textColor="@android:color/background_dark"
-                android:textAlignment="textStart"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/online_image"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="5dp"
+            android:contentDescription="@null"
+            android:src="@drawable/online"
+            android:visibility="invisible" />
+    </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/online_image"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="5dp"
-                android:src="@drawable/online"
-                android:contentDescription="@null"/>
-        </RelativeLayout>
     <TextView
         android:id="@+id/user_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_toEndOf="@+id/users_profile_image"
-        android:text="User status"
-        android:lines="2"
         android:layout_below="@+id/user_infp"
         android:layout_marginTop="2dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@+id/users_profile_image"
+        android:lines="2"
+        android:text="User status"
         android:textAlignment="textStart"
-        android:textSize="13sp"/>
+        android:textSize="13sp" />
 </RelativeLayout>
