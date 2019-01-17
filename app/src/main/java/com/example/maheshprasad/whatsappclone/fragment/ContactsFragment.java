@@ -16,8 +16,12 @@ import com.example.maheshprasad.whatsappclone.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -28,7 +32,7 @@ public class ContactsFragment extends Fragment {
 
     private View ContactsView;
     private RecyclerView myContectsList;
-    private DatabaseReference ContactsRef;
+    private DatabaseReference ContactsRef, UsersRef;
     private FirebaseAuth mAuth;
     private String currentUserId;
 
@@ -49,7 +53,9 @@ public class ContactsFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
+
         ContactsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserId);
+        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         return ContactsView;
     }
@@ -64,22 +70,51 @@ public class ContactsFragment extends Fragment {
 
         FirebaseRecyclerAdapter<Contacts, ContactsViewHolder> adapter = new FirebaseRecyclerAdapter<Contacts, ContactsViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull ContactsViewHolder holder, int position, @NonNull Contacts model) {
+            protected void onBindViewHolder(@NonNull final ContactsViewHolder holder, int position, @NonNull Contacts model) {
+                String userIDs = getRef(position).getKey();
 
+                UsersRef.child(userIDs).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasChild("image")) {
+                            String profileImage = dataSnapshot.child("image").getValue().toString();
+                            String userProfileName = dataSnapshot.child("name").getValue().toString();
+                            String userProfileStatus = dataSnapshot.child("status").getValue().toString();
+
+                            holder.userName.setText(userProfileName);
+                            holder.userStatus.setText(userProfileStatus);
+                            Picasso.get().load(profileImage).placeholder(R.drawable.profile_image).into(holder.profileImage);
+                        } else {
+                            String userProfileName = dataSnapshot.child("name").getValue().toString();
+                            String userProfileStatus = dataSnapshot.child("status").getValue().toString();
+
+                            holder.userName.setText(userProfileName);
+                            holder.userStatus.setText(userProfileStatus);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
 
             @NonNull
             @Override
             public ContactsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-
-                return null;
+                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_display_layout, viewGroup, false);
+                ContactsViewHolder viewHolder = new ContactsViewHolder(view);
+                return viewHolder;
             }
         };
+
+        myContectsList.setAdapter(adapter);
+        adapter.startListening();
 
     }
 
     public static class ContactsViewHolder extends RecyclerView.ViewHolder {
-
         TextView userName, userStatus;
         CircleImageView profileImage;
 
