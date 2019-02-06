@@ -61,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
         mTabs = findViewById(R.id.main_tabs);
         mTabs.setupWithViewPager(myViewPager);
+
+        //Display tab layout 1 by default
+//        mTabs.getTabAt(1).select();
     }
 
     @Override
