@@ -20,21 +20,23 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class RegisterActivity extends AppCompatActivity {
 
     //Widget
     public Button CreateAccountButton;
-    public EditText UserEmail,UserPassword;
+    public EditText UserEmail, UserPassword;
     public TextView AlreadyHaveAccountLink;
     public ProgressDialog loadingBar;
 
     //String
-    String email,spassword;
+    String email, spassword;
 
     //Firebase
     FirebaseAuth mAuth;
     DatabaseReference rootRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,38 +65,45 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void CreateNewAccount() {
-            email = UserEmail.getText().toString().trim();
-            spassword = UserPassword.getText().toString().trim();
+        email = UserEmail.getText().toString().trim();
+        spassword = UserPassword.getText().toString().trim();
 
-            if (TextUtils.isEmpty(email)){
-                Toast.makeText(this, "Please enter email...", Toast.LENGTH_SHORT).show();
-            }else if (TextUtils.isEmpty(spassword)){
-                Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
-            }else {
-                loadingBar.setTitle("Creating new Account");
-                loadingBar.setMessage("Please wait, while we are creating new account for you...");
-                loadingBar.setCanceledOnTouchOutside(false);
-                loadingBar.show();
-                mAuth.createUserWithEmailAndPassword(email,spassword)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Please enter email...", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(spassword)) {
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+        } else {
+            loadingBar.setTitle("Creating new Account");
+            loadingBar.setMessage("Please wait, while we are creating new account for you...");
+            loadingBar.setCanceledOnTouchOutside(false);
+            loadingBar.show();
+            mAuth.createUserWithEmailAndPassword(email, spassword)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                if (task.isSuccessful())
-                                {
-                                    String currentUserID = mAuth.getCurrentUser().getUid();
-                                    rootRef.child("Users").child(currentUserID).setValue("");
-                                    loadingBar.dismiss();
-                                    Toast.makeText(RegisterActivity.this, "Account Created Successfully...", Toast.LENGTH_SHORT).show();
-                                    SendUserToMainActivity();
-                                }else {
-                                    loadingBar.dismiss();
-                                    String message = task.getException().toString();
-                                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
-                                }
+                            if (task.isSuccessful()) {
+
+                                String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+                                String currentUserID = mAuth.getCurrentUser().getUid();
+                                rootRef.child("Users").child(currentUserID).setValue("");
+
+                                rootRef.child("Users").child(currentUserID).child("device_token")
+                                        .setValue(deviceToken);
+
+
+                                loadingBar.dismiss();
+                                Toast.makeText(RegisterActivity.this, "Account Created Successfully...", Toast.LENGTH_SHORT).show();
+                                SendUserToMainActivity();
+                            } else {
+                                loadingBar.dismiss();
+                                String message = task.getException().toString();
+                                Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
-                        });
-            }
+                        }
+                    });
+        }
 
     }
 
@@ -109,12 +118,12 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void SendUserToLoginActivity() {
-        Intent registerIntent = new Intent(RegisterActivity.this,LoginActivity.class);
+        Intent registerIntent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(registerIntent);
     }
 
     private void SendUserToMainActivity() {
-        Intent mainIntent = new Intent(RegisterActivity.this,MainActivity.class);
+        Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mainIntent);
         finish();

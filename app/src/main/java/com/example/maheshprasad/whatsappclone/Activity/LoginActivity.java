@@ -18,21 +18,25 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class LoginActivity extends AppCompatActivity {
 
     //Widget
-    public Button LoginButton,phoneButton;
-    public EditText UserEmail,UserPassword;
-    public TextView NeedNewAccount,ForgetPasswordLink;
+    public Button LoginButton, phoneButton;
+    public EditText UserEmail, UserPassword;
+    public TextView NeedNewAccount, ForgetPasswordLink;
     public ProgressDialog mprogressDialog;
 
     //Firebase
     FirebaseAuth mAuth;
 
     //String
-    String email,spassword;
+    String email, spassword;
 
+    private DatabaseReference UsersRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();
-
+        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         //coment
 
         //initialize Widget
@@ -63,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         phoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent phoneloginIntent = new Intent(LoginActivity.this,PhoneLoginActivity.class);
+                Intent phoneloginIntent = new Intent(LoginActivity.this, PhoneLoginActivity.class);
                 startActivity(phoneloginIntent);
             }
         });
@@ -73,11 +77,11 @@ public class LoginActivity extends AppCompatActivity {
         email = UserEmail.getText().toString().trim();
         spassword = UserPassword.getText().toString().trim();
 
-        if (TextUtils.isEmpty(email)){
+        if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter email...", Toast.LENGTH_SHORT).show();
-        }else if (TextUtils.isEmpty(spassword)){
+        } else if (TextUtils.isEmpty(spassword)) {
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
 
             mprogressDialog.setTitle("Sign in");
             mprogressDialog.setMessage("Please wait...");
@@ -85,16 +89,27 @@ public class LoginActivity extends AppCompatActivity {
             mprogressDialog.show();
 
 
-            mAuth.signInWithEmailAndPassword(email,spassword)
+            mAuth.signInWithEmailAndPassword(email, spassword)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful())
-                            {
-                                mprogressDialog.dismiss();
-                                Toast.makeText(LoginActivity.this, "Logged in Successful...", Toast.LENGTH_SHORT).show();
-                                SendUserToMainActivity();
-                            }else {
+                            if (task.isSuccessful()) {
+                                String currentUSerId = mAuth.getCurrentUser().getUid();
+                                String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+                                UsersRef.child(currentUSerId).child("device_token")
+                                        .setValue(deviceToken)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                mprogressDialog.dismiss();
+                                                Toast.makeText(LoginActivity.this, "Logged in Successful...", Toast.LENGTH_SHORT).show();
+                                                SendUserToMainActivity();
+                                            }
+                                        });
+
+
+                            } else {
                                 mprogressDialog.dismiss();
                                 String message = task.getException().toString();
                                 Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -116,14 +131,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void SendUserToMainActivity() {
-        Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mainIntent);
         finish();
     }
 
     private void SendUserToRegisterActivity() {
-        Intent registerIntent = new Intent(LoginActivity.this,RegisterActivity.class);
+        Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(registerIntent);
     }
 }
