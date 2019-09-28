@@ -3,6 +3,7 @@ package com.example.maheshprasad.whatsappclone.Activity;
 import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.provider.DocumentsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -28,6 +29,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
 
     //Widget
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
     private DatabaseReference rootRef;
+    private String currentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +79,25 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser == null) {
             SendUserToLoginActivity();
         } else {
+            updateUserStatus("online");
             VerifyUserExistance();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (currentUser != null) {
+            updateUserStatus("offline");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (currentUser != null) {
+            updateUserStatus("offline");
         }
     }
 
@@ -181,6 +205,28 @@ public class MainActivity extends AppCompatActivity {
     private void SendUserToFindFriendsActivity() {
         Intent settingsIntent = new Intent(MainActivity.this, FindFriendsActivity.class);
         startActivity(settingsIntent);
+
+    }
+
+    private void updateUserStatus(String state){
+        String saveCurrentTime,saveCurrentDate;
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd,yyyy");
+        saveCurrentDate = currentDate.format(calendar.getTime());
+
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        saveCurrentTime = currentTime.format(calendar.getTime());
+
+        HashMap<String,Object> onlineState = new HashMap<>();
+        onlineState.put("time",saveCurrentTime);
+        onlineState.put("date",saveCurrentDate);
+        onlineState.put("state",state);
+
+        currentUserId = mAuth.getUid();
+
+       rootRef.child("Users").child(currentUserId).child("userState")
+               .updateChildren(onlineState);
 
     }
 }
