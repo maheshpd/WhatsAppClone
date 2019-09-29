@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.maheshprasad.whatsappclone.Activity.ChatActivity;
@@ -87,11 +88,33 @@ public class ChatFragment extends Fragment {
                                 retImage[0] = dataSnapshot.child("image").getValue().toString();
                                 Picasso.get().load(retImage[0]).into(holder.profileImage);
                             }
+
+
                             final String retName = dataSnapshot.child("name").getValue().toString();
                             final String retStatus = dataSnapshot.child("status").getValue().toString();
 
                             holder.userName.setText(retName);
-                            holder.userStatus.setText("Last Seen: " + "\n" + "Date " + " Time");
+
+
+                            if (dataSnapshot.child("userState").hasChild("state"))
+                            {
+                                String state = dataSnapshot.child("userState").child("state").getValue().toString();
+                                String date = dataSnapshot.child("userState").child("date").getValue().toString();
+                                String time = dataSnapshot.child("userState").child("time").getValue().toString();
+
+                                if (state.equals("online")){
+                                    holder.userStatus.setText("online");
+                                    holder.onlineImage.setVisibility(View.VISIBLE);
+                                } else if (state.equals("offline")){
+                                    holder.userStatus.setText("Last Seen: "+ date +" "+time);
+                                    holder.onlineImage.setVisibility(View.INVISIBLE);
+                                }
+                            }
+
+                            else {
+                                holder.userStatus.setText("offline");
+                            }
+
 
                             holder.itemView.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -130,6 +153,7 @@ public class ChatFragment extends Fragment {
 
         CircleImageView profileImage;
         TextView userStatus, userName;
+        ImageView onlineImage;
 
         public ChatsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -137,7 +161,7 @@ public class ChatFragment extends Fragment {
             profileImage = itemView.findViewById(R.id.users_profile_image);
             userStatus = itemView.findViewById(R.id.user_status);
             userName = itemView.findViewById(R.id.display_user_name);
-
+            onlineImage = itemView.findViewById(R.id.online_image);
 
         }
     }
