@@ -1,6 +1,8 @@
 package com.example.maheshprasad.whatsappclone.Adapter;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,9 +45,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MessageViewHolder messageViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final MessageViewHolder messageViewHolder, final int position) {
         final String messageSenderId = mAuth.getCurrentUser().getUid();
-        Messages messages = userMessageList.get(i);
+        Messages messages = userMessageList.get(position);
 
         String fromUserID = messages.getFrom();
         String fromMessageType = messages.getType();
@@ -99,6 +101,43 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 messageViewHolder.receiverProfileImage.setVisibility(View.VISIBLE);
                 messageViewHolder.messageReceiverPicture.setVisibility(View.VISIBLE);
                 Picasso.get().load(messages.getMessage()).into(messageViewHolder.messageReceiverPicture);
+            }
+        } else {
+            if (fromUserID.equals(messageSenderId))
+            {
+                messageViewHolder.messageSenderPicture.setVisibility(View.VISIBLE);
+                messageViewHolder.messageSenderPicture.setBackgroundResource(R.drawable.file);
+
+                messageViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessageList.get(position).getMessage()));
+//                        messageViewHolder.itemView.getContext().startActivity(intent);
+
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse(userMessageList.get(position).getMessage()),"application/pdf");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        messageViewHolder.itemView.getContext().startActivity(intent);
+                    }
+                });
+
+            }else {
+                messageViewHolder.receiverProfileImage.setVisibility(View.VISIBLE);
+                messageViewHolder.messageReceiverPicture.setVisibility(View.VISIBLE);
+                messageViewHolder.messageReceiverPicture.setBackgroundResource(R.drawable.file);
+
+                messageViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessageList.get(position).getMessage()));
+//                        messageViewHolder.itemView.getContext().startActivity(intent);
+
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse(userMessageList.get(position).getMessage()),"application/pdf");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        messageViewHolder.itemView.getContext().startActivity(intent);
+                    }
+                });
             }
         }
 
